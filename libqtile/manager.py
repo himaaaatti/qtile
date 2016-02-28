@@ -285,7 +285,7 @@ class Qtile(command.CommandObject):
                     try:
                         ctx.iteration(True)
                     except Exception:
-                        self.qtile.exception("got exception from gobject")
+                        logger.exception("got exception from gobject")
             self._glib_loop = self.run_in_executor(gobject_thread)
         except ImportError:
             logger.warning("importing dbus/gobject failed, dbus will not work.")
@@ -820,7 +820,7 @@ class Qtile(command.CommandObject):
         # it can't really be a candidate
         candidate_screens = [
             s for s in candidate_screens
-            if x < s.x + s.width and y < s.y + s.width
+            if x < s.x + s.width and y < s.y + s.height
         ]
         for s in candidate_screens:
             middle_x = s.x + s.width / 2

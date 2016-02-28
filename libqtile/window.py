@@ -111,6 +111,8 @@ _NET_WM_STATE_TOGGLE = 2
 
 
 class _Window(command.CommandObject):
+    _windowMask = None  # override in child class
+
     def __init__(self, window, qtile):
         self.window, self.qtile = window, qtile
         self.hidden = True
@@ -1287,9 +1289,9 @@ class Window(_Window):
         self.toggle_maximize()
 
     def cmd_enable_maximize(self):
-        self.maxmize = True
+        self.maximize = True
 
-    def cmd_disable_maximimize(self):
+    def cmd_disable_maximize(self):
         self.maximize = False
 
     def cmd_toggle_fullscreen(self):
