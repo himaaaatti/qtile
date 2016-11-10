@@ -290,6 +290,7 @@ class _TextBox(_Widget):
             "font shadow color, default is None(no shadow)"
         ),
         ("markup", False, "Whether or not to use pango markup"),
+        ("visible", True, "Is draw text on bar"),
     ]
 
     def __init__(self, text=" ", width=bar.CALCULATED, **config):
@@ -373,6 +374,8 @@ class _TextBox(_Widget):
         if self.offsetx is None:
             return
         self.drawer.clear(self.background or self.bar.background)
+        if not self.visible:
+            return
         self.layout.draw(
             self.actual_padding or 0,
             int(self.bar.height / 2.0 - self.layout.height / 2.0) + 1
@@ -392,6 +395,9 @@ class _TextBox(_Widget):
         if fontshadow is not UNSPECIFIED:
             self.fontshadow = fontshadow
         self.bar.draw()
+
+    def cmd_toggle_visible(self):
+        self.visible = not self.visible
 
     def info(self):
         d = _Widget.info(self)
