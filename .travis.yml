@@ -52,11 +52,11 @@ addons:
     - graphviz # for docs
 
 install:
-  - pip install tox
+  - pip install detox
   - if [[ $TOXENV == py* ]]; then pip install coveralls; fi
 
 script:
-  - tox
+  - detox
 
 notifications:
   email: false
