@@ -337,7 +337,7 @@ class TreeTab(Layout):
         ("section_bottom", 6, "Bottom margin of section"),
         ("section_padding", 4, "Bottom of margin section label"),
         ("section_left", 4, "Left margin of section label"),
-        ("panel_width", 150, "Width of the left panel"),
+        ("left_panel_width", 150, "Width of the left panel"),
         ("sections", ['Default'], "Foreground color of inactive tab"),
         ("name", "treetab", "Name of this layout."),
         ("previous_on_rm", False, "Focus previous window on close instead of first."),
@@ -352,6 +352,7 @@ class TreeTab(Layout):
         self._layout = None
         self._tree = Root(self.sections)
         self._nodes = {}
+        self.is_width_zero = False
 
     def clone(self, group):
         c = Layout.clone(self, group)
@@ -414,6 +415,20 @@ class TreeTab(Layout):
         self._nodes[win].remove()
         del self._nodes[win]
         self.draw_panel()
+
+    @property
+    def panel_width(self):
+        if self.is_width_zero:
+            return 1
+        else:
+            return self.left_panel_width
+
+    @panel_width.setter
+    def panel_width(self, value):
+        if value < 0:
+            self.left_panel_width = 1
+        else:
+            self.left_panel_width = value
 
     def _create_panel(self):
         self._panel = window.Internal.create(
@@ -635,6 +650,10 @@ class TreeTab(Layout):
 
     def cmd_decrease_ratio(self):
         self.panel_width -= 10
+        self.group.layoutAll()
+
+    def cmd_toggle_width(self):
+        self.is_width_zero = not self.is_width_zero
         self.group.layoutAll()
 
     def _create_drawer(self):
